@@ -7,3 +7,4 @@ def add(number1,number2):
 
 add(1,7)
 
+print(f"hi,my name is {name} i scored a 20 of {20} on a spelling test in 4th grade (i am terrible at spelling) my classed today are {classes}")
