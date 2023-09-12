@@ -1,0 +1,34 @@
+#math
+x = 3+4
+x = 3%4
+x = 3/4
+x = 3.0/4.0
+x = 3*4
+x = 3-4
+#logic symbols
+x=4
+y=1
+if x > y:
+    pass
+if x < y:
+    pass
+if x == y:
+    pass
+if x != y:
+    pass
+if x >= y:
+    pass
+if x <= y:
+    pass
+#logic
+if x and y == 3:
+    pass
+if x or y == 3: 
+    pass
+
+x = True
+y = False
+
+if x and not y:
+    pass
+
