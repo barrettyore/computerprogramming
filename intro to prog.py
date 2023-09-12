@@ -8,9 +8,9 @@ def test():
 in_put = input("wahooooooooooooooooooooo:>")#input
 print(f"you typed {in_put}")#output
 interger = 5
-float = 3.0
+floating = 3.0
 string = "9"
-print(float+interger)#will be float
+print(floating+interger)#will be float
 bool = False 
 
 empty=""#declearation
@@ -58,6 +58,37 @@ this_is_not_readable = False
 x = "this will be turned in to a list at the charector"
 a = list(x)
 print(a)
+#expression
+expression = 17 + 14.0
+print(expression)
+#user defined function
+def user():
+    print("this is a user defined function")
+#arguments
+def arg(output):
+    print(output)
+arg("wahoooo")
+#parameters
+def para(parameter1):
+    print(parameter1)
+para(32)
+#return
+def ret(num,num2):
+    return(num+num2)
+print(ret(35,654)+5)
+#void
+def void() -> None:
+    pass
+#complex???
+print(complex(3))
+#simple data types
+print(str(3))
+print(float(3))
+print(int(3.0))
+#im guessing that you dont want to see an example of reuseabllity modularity or abstraction and it is 
+#just a concept you went over like order of operations
+#correct me if im wrong
+
 
 
 
