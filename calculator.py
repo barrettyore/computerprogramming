@@ -15,7 +15,7 @@ def sub(nu1,nu2):
 def div(nu1,nu2):
     print(f"{nu1} divided by {nu2} is enqual to {float(nu1)/float(nu2)}")
 
-def mul(nu1,nu2):
+def mul(nu1,nu2):   
     print(f"{nu1} multiplyed by {nu2} is enqual to {float(nu1)*float(nu2)}")
 
 def mod(nu1,nu2):
