@@ -1,5 +1,5 @@
-import socket
-while True:
+while True:    
+    import socket
     host = input("insert game code here:>")
     port = 9090
 
