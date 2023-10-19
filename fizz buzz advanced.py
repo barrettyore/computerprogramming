@@ -1,9 +1,5 @@
 #varibles
-x=0 
-fizz = 0
-buzz = 0
-fizz_buzz = 0
-final_count = []
+x=0
 sn = int(input("special number here (1-10 only):>"))
 sw = input("replace word here:>")
 #count
@@ -17,13 +13,10 @@ while x<=100:
                 
                 elif x%3 == 0 and x%5 == 0:
                     print("fizz buzz")
-                    fizz_buzz += 1
                 elif x%3 == 0:
                     print("fizz")
-                    fizz += 1
                 elif x%5 == 0:
                     print("buzz")
-                    buzz += 1
                 else:
                     print(x)
                 x += 1
