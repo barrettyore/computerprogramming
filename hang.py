@@ -8,19 +8,20 @@ def get_word():
     for x in f:
         word_list.append(x)
     y = random.choice(word_list)
-    print(y)#debug
+    # print(y)#debug
     return(y)
 
 def game():
     empty = []
     incorrect = []
+    global lives
     lives = 6
-    print(word)
+    # print(word)
     for x in range(len(word)):
         empty.append("_")
-    print(empty)#debug delete later
+    # print(empty)#debug delete later
     fin = False
-    while lives > 0 or fin != False:
+    while lives > 0 and fin == False:
         print(f"you current already guessed letters are...{incorrect}")
         guessed = input("type you guess letter here:>")
         if len(guessed) == 1:
@@ -54,21 +55,34 @@ def game():
                         #check if user won
 
                     if empty == word:
-                        print(f"you did it you did it you did it the word was{word_og}")
                         fin = True
+                        e()
                         break
                 print(empty)
+                if empty == word:
+                    print(f"you did it you did it you did it the word was {word_og}")
             else: 
                 print("wrong letter try again")
                 incorrect.append(guessed)
                 lives -= 1
-                print(lives)#change to correct art type latter
+                if lives == 5:
+                    d1()
+                elif lives == 4:
+                    d2()
+                elif lives == 3:
+                    d3()
+                elif lives == 2:
+                    d4()
+                elif lives == 1:
+                    d5()
+                else:
+                    dead()
 
         
         
         
-    else:
-        print("only one letter at a time please")
+        else:
+                print("only one letter at a time please")
     
 
 
@@ -84,7 +98,82 @@ def dead():
     print("                |")
     print("       _________⊥__________")
 
+def d1():
+    print("""	|-------|
+	|	|      
+	o	|
+       		|
+        	|
+		|
+________________⊥______________________
+""")
+
+def d2():
+    print("""	|-------|
+	|	|      
+	o	|
+        |	|
+       		|
+		|
+________________⊥______________________""")
+
+def d3():
+    print("""	|-------|
+	|	|      
+	o	|
+       -|	|
+       		|
+		|
+________________⊥______________________""")
+
+def d4():
+    print("""	|-------|
+	|	|      
+	o	|
+       -|-	|
+       		|
+		|
+________________⊥______________________""")
+
+def d5():
+    print("""	|-------|
+	|	|      
+	o	|
+       -|-	|
+       / 	|
+		|
+________________⊥______________________
+""")
+
+def e():
+    print("""	|-------|
+	|	|      
+		|
+       		|
+       		|
+		|
+________________⊥______________________
+""")
+def a():
+    print("""      	     thank you for playing!	
+	o	
+       -|-	
+       / \	
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾""")
+
 #driver
+#art test
+#dead
+# dead()
+# d1()
+# d2()
+# d3()
+# d4()
+# d5()
+# e()
+# a()
+
+
 print("welcome to hang man")
 dead()
 print("getting word")#debug
@@ -92,3 +181,19 @@ word_og = get_word()
 word = list(word_og)
 word.pop()
 game()
+if lives == 0:
+    print(f"you failed the word was {word_og}")
+again = input("do you want to play again y/n:>")
+while True:
+    if again == "y":
+        print("getting word")#debug
+        word_og = get_word()
+        word = list(word_og)
+        word.pop()
+        game()
+        if lives == 0:
+            print(f"you failed the word was {word_og}")
+            
+    else:
+        a()
+        break
