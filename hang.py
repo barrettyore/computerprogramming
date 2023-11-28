@@ -183,8 +183,8 @@ word.pop()
 game()
 if lives == 0:
     print(f"you failed the word was {word_og}")
-again = input("do you want to play again y/n:>")
 while True:
+    again = input("do you want to play again y/n:>")
     if again == "y":
         print("getting word")#debug
         word_og = get_word()
