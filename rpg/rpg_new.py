@@ -15,7 +15,7 @@ medium_kit = 0
 large_kit = 0
 mini_hospital = 0
 global invatory
-invatory = ["pulse pistol","tesla stick","tesla rifle","small kit","medium kit","large kit","mini hospital"]
+invatory = ["pulse pistol","tesla stick","tesla rifle","small kit"]
 global health
 health = settings.MAX_HEALTH
 
@@ -93,8 +93,6 @@ def check_inv():
 
     if small_kit > 0 or medium_kit > 0 or large_kit > 0 or mini_hospital > 0:
         while True:
-            if health > 200:
-                health = 200
             action = input(f"Your health is {health}. Would you like to use a kit? (y/n): ")
             if action == "y":
                 action = input("""Press 1 for small kit
@@ -106,26 +104,18 @@ def check_inv():
                 if action == "1" and small_kit > 0:
                     health += settings.smallkit["health"]
                     small_kit -= 1
-                    if health > 200:
-                        health = 200
                     print("Consumed small kit. Health is now", health) 
                 elif action == "2" and medium_kit > 0:
                     health += settings.mediumkit["health"]
                     medium_kit -= 1
-                    if health > 200:
-                        health = 200
                     print("Consumed medium kit. Health is now", health) 
                 elif action == "3" and large_kit > 0:
                     health += settings.largekit["health"]
                     large_kit -= 1 
-                    if health > 200:
-                        health = 200
                     print("Consumed large kit. Health is now", health)
                 elif action == "4" and mini_hospital > 0:
                     health += settings.minihospital["health"]
                     mini_hospital -= 1
-                    if health > 200:
-                        health = 200
                     print("Consumed mini hospital. Health is now", health) 
                 elif action == "0":
                     print("Canceling")
@@ -136,29 +126,119 @@ def check_inv():
                 break
 
 
-def combat_loop(enemy_name, enemy_settings):
+def combat_loop(enemy_settings):
     global health
-    global small_kit
-    global medium_kit
-    global large_kit
-    global mini_hospital
+    global in_combat
 
-    
-    enemy_health = enemy_settings["health"]
-
-    while health > 0 and enemy_health > 0:
+    while health > 0 and enemy_settings["health"] > 0 and in_combat:
         action = input("Press 'a' to attack, 'e' to escape, or 'c' to change weapon: > ")
 
         if action == 'a':
             # Attack with the current weapon
             extra = random.randint(3, 10)
             damage = settings.teslastick["damage"] + extra
-            enemy_health -= damage
-            print(f"You dealt {damage} damage plus {extra} extra. Enemy health is now {enemy_health}.")
+            enemy_settings["health"] -= damage
+            print(f"You dealt {damage} damage plus {extra} extra. Enemy health is now {enemy_settings['health']}.")
 
-            if enemy_health <= 0:
+            if enemy_settings["health"] <= 0:
                 print("You defeated the enemy!")
-                chance = random.randint(1, 5)
+                chance = random.randint(1, 10)
+                if chance == 1:
+                    print("You picked up 1 small kit.")
+                    small_kit += 1
+                elif chance == 2:
+                    print("You picked up 1 medium kit.")
+                    medium_kit += 1
+                elif chance == 3:
+                    print("You picked up 1 large kit.")
+                    large_kit += 1
+                elif chance == 4:
+                    print("You picked up 1 mini hospital.")
+                    mini_hospital += 1
+                elif chance == 5:
+                    pass
+                    # When ready, implement weapon ammo here
+                in_combat = False  # Exit combat loop
+                break
+            else:
+                # Enemy's turn
+                enemy_damage = random.randint(enemy_settings["damage-low"], enemy_settings["damage-high"])
+                health -= enemy_damage
+                print(f"The enemy dealt {enemy_damage} damage. Your health is now {health}.")
+
+                if health <= 0:
+                    print("You died.")
+                    in_combat = False  # Exit combat loop
+                    break
+
+        elif action == 'e':
+            print("You escaped from the enemy.")
+            in_combat = False  # Exit combat loop
+            break
+
+        elif action == 'c':
+            change_weapon()  # Call the function to change weapons
+
+        else:
+            print("Invalid input. Press 'a' to attack, 'e' to escape, or 'c' to change weapon.")
+            
+
+
+
+
+def game():
+    global small_kit
+    global medium_kit
+    global large_kit
+    global mini_hospital
+    global health
+    invatory.append("tesla stick")
+    # varibles
+    health = settings.MAX_HEALTH
+    name = input("you're having trouble remembering your name, what is it: > ")
+
+    # game
+    print('new weapon "tesla stick"')
+
+    while health > 0:  # Check if the player is still alive
+        action = input("Press 'w' to walk or 'e' to check inventory: > ")
+        if action == 'w':
+            if random.randint(1, 4) == 1:
+                enemy_name, enemy_settings = encounter_enemy()
+                in_combat = True
+                print(f"You encountered a {enemy_name}!")
+                combat_loop(enemy_settings)
+                in_combat = False  # Combat ended, reset the flag
+            else:
+                print("You walked to the next room.")
+        elif action == 'e':
+            check_inv()
+        else:
+            print("Invalid input. Press 'w' to walk or 'e' to check inventory.")
+
+    print("Game over. You died.")
+
+def combat_loop(enemy_settings):
+    global health
+    global in_combat
+    global small_kit
+    global medium_kit
+    global large_kit
+    global mini_hospital
+
+    while health > 0 and enemy_settings["health"] > 0:
+        action = input("Press 'a' to attack, 'e' to escape, or 'c' to change weapon: > ")
+
+        if action == 'a':
+            # Attack with the current weapon
+            extra = random.randint(3, 10)
+            damage = settings.teslastick["damage"] + extra
+            enemy_settings["health"] -= damage
+            print(f"You dealt {damage} damage plus {extra} extra. Enemy health is now {enemy_settings['health']}.")
+
+            if enemy_settings["health"] <= 0:
+                print("You defeated the enemy!")
+                chance = random.randint(1, 10)
                 if chance == 1:
                     print("You picked up 1 small kit.")
                     small_kit += 1
@@ -190,56 +270,14 @@ def combat_loop(enemy_name, enemy_settings):
             break
 
         elif action == 'c':
-            change_weapon()
+            change_weapon() 
 
         else:
             print("Invalid input. Press 'a' to attack, 'e' to escape, or 'c' to change weapon.")
 
-    global in_combat
-    in_combat = False  # Reset in_combat flag after the combat loop
-
-# ... (other functions)
-
-
-
-
-
-
-def game():
-    global small_kit
-    global medium_kit
-    global large_kit
-    global mini_hospital
-    global health
-    global in_combat
-    # varibles
-    health = settings.MAX_HEALTH
-    name = input("you're having trouble remembering your name, what is it: > ")
-
-    # game
-    print('new weapon "tesla stick"')
-
-    while health > 0:  # Check if the player is still alive
-        action = input("Press 'w' to walk or 'e' to check inventory: > ")
-
-        if action == 'w':
-            if random.randint(1, 4) == 1:
-                enemy_name, enemy_settings = encounter_enemy()
-                in_combat = True
-                print(f"You encountered a {enemy_name}!")
-                combat_loop(enemy_name, enemy_settings)  # Pass both enemy_name and enemy_settings
-                in_combat = False  # Combat ended, reset the flag
-            else:
-                print("You walked to the next room.")
-
-        elif action == 'e':
-            check_inv()
-
-        else:
-            print("Invalid input. Press 'w' to walk or 'e' to check inventory.")
-
-    print("Game over. You died.")
-
+        # Check if the player is still in combat after the action
+        if not in_combat:
+            break
 
 
 
@@ -251,7 +289,6 @@ def turtoial():
     global large_kit
     global mini_hospital
     global health 
-    global invatory
     health -= 20
     print("welcome to the turtoial")
     print("in this game you will walk between rooms while running into enemys and managing your weapons and invetory")
