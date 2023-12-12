@@ -48,7 +48,7 @@ class settings():
         "damage-high": 30, 
     }
 
-    ALD = {
+    ald = {
         "name": "AUTOMATED LASER DESTRUCTER ",
         "health": 300,
         "type": "hard",
