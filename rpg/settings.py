@@ -39,3 +39,19 @@ class settings():
         "name": "mini hospital",
         "health": 100,
     }
+
+    assddrone = {
+        "name": "AUTOMATED SECURITY SHOCK DRONE",
+        "health": 80,
+        "type": "soft",
+        "damage-low": 10,
+        "damage-high": 30, 
+    }
+
+    ALD = {
+        "name": "AUTOMATED LASER DESTRUCTER ",
+        "health": 300,
+        "type": "hard",
+        "damage-low": 50,
+        "damage-high": 80, 
+    }
