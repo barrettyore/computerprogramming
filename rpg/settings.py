@@ -52,6 +52,30 @@ class settings():
         "name": "AUTOMATED LASER DESTRUCTER ",
         "health": 300,
         "type": "hard",
+        "damage-low": 30,
+        "damage-high": 40, 
+    }
+
+    walker = {
+        "name": "WALKER",
+        "health": 500,
+        "type": "hard",
+        "damage-low": 10,
         "damage-low": 50,
-        "damage-high": 80, 
+    }
+
+    asd = {
+        "name": "AUTOMATED STEALTH DRONE",
+        "health": 150,
+        "type": "soft",
+        "damage-low": 30,
+        "damage-high": 60, 
+    }
+
+    at = {
+        "name": "AUTOMATED TURRET",
+        "health": 200,
+        "type": "soft",
+        "damage-low": 20,
+        "damage-high": 40,
     }
