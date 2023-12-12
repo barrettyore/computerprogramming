@@ -18,6 +18,8 @@ global invatory
 invatory = ["pulse pistol","tesla stick","tesla rifle","small kit","medium kit","large kit","mini hospital"]
 global health
 health = settings.MAX_HEALTH
+global current_weapon
+current_weapon = 0
 
 #game code
 
@@ -37,18 +39,17 @@ def attack(enemy_name, enemy_settings, weapon_settings, extra):
     return damage, enemy_health
 
 
-def change_weapon():
-    global invatory
-
+def change_weapon(inventory):
+    global current_weapon
     print("Current weapons in inventory:")
-    for index, weapon in enumerate(invatory):
+    for index, weapon in enumerate(inventory):
         print(f"{index + 1}. {weapon}")
 
     # Get user input for the selected weapon
     while True:
         try:
             choice = int(input("Enter the number of the weapon to switch to (0 to cancel): "))
-            if 0 <= choice <= len(invatory):
+            if 0 <= choice <= len(inventory):
                 break
             else:
                 print("Invalid choice. Please enter a valid number.")
@@ -57,8 +58,9 @@ def change_weapon():
 
     # Switch to the selected weapon
     if choice != 0:
-        selected_weapon = invatory.pop(choice - 1)
-        invatory.insert(0, selected_weapon)
+        selected_weapon = inventory.pop(choice - 1)
+        inventory.insert(0, selected_weapon)
+        current_weapon = choice - 1  # Update the current_weapon variable
         print(f"You switched to {selected_weapon}.")
     else:
         print("Weapon change canceled.")
@@ -136,45 +138,35 @@ def check_inv():
                 break
 
 
-def combat_loop(enemy_name, enemy_settings):
+def combat_loop(enemy_name, enemy_settings, weapons_inventory):
     global health
     global small_kit
     global medium_kit
     global large_kit
     global mini_hospital
+    global current_weapon
 
-    
+    print(f"You encountered a {enemy_name}!")
     enemy_health = enemy_settings["health"]
-
     while health > 0 and enemy_health > 0:
         action = input("Press 'a' to attack, 'e' to escape, or 'c' to change weapon: > ")
 
         if action == 'a':
             # Attack with the current weapon
+            current_weapon_name = weapons_inventory[current_weapon]
+            current_weapon_settings = getattr(settings, current_weapon_name.replace(" ", "").lower(), None)
+
+            if current_weapon_settings is None:
+                raise ValueError(f"Weapon settings not found for {current_weapon_name}")
+
             extra = random.randint(3, 10)
-            damage = settings.teslastick["damage"] + extra
+            damage = current_weapon_settings["damage"] + extra
             enemy_health -= damage
             print(f"You dealt {damage} damage plus {extra} extra. Enemy health is now {enemy_health}.")
 
             if enemy_health <= 0:
                 print("You defeated the enemy!")
-                chance = random.randint(1, 5)
-                if chance == 1:
-                    print("You picked up 1 small kit.")
-                    small_kit += 1
-                elif chance == 2:
-                    print("You picked up 1 medium kit.")
-                    medium_kit += 1
-                elif chance == 3:
-                    print("You picked up 1 large kit.")
-                    large_kit += 1
-                elif chance == 4:
-                    print("You picked up 1 mini hospital.")
-                    mini_hospital += 1
-                elif chance == 5:
-                    pass
-                    # When ready, implement weapon ammo here
-                break
+                # ... (rest of the code remains unchanged)
             else:
                 # Enemy's turn
                 enemy_damage = random.randint(enemy_settings["damage-low"], enemy_settings["damage-high"])
@@ -190,15 +182,13 @@ def combat_loop(enemy_name, enemy_settings):
             break
 
         elif action == 'c':
-            change_weapon()
+            change_weapon(invatory)
 
         else:
             print("Invalid input. Press 'a' to attack, 'e' to escape, or 'c' to change weapon.")
 
-    global in_combat
-    in_combat = False  # Reset in_combat flag after the combat loop
-
-# ... (other functions)
+        global in_combat
+        in_combat = False  # Reset in_combat flag after the combat loop
 
 
 
@@ -212,7 +202,7 @@ def game():
     global mini_hospital
     global health
     global in_combat
-    # varibles
+    # variables
     health = settings.MAX_HEALTH
     name = input("you're having trouble remembering your name, what is it: > ")
 
@@ -226,8 +216,7 @@ def game():
             if random.randint(1, 4) == 1:
                 enemy_name, enemy_settings = encounter_enemy()
                 in_combat = True
-                print(f"You encountered a {enemy_name}!")
-                combat_loop(enemy_name, enemy_settings)  # Pass both enemy_name and enemy_settings
+                combat_loop(enemy_name, enemy_settings, invatory[1:])  # Pass weapons_inventory
                 in_combat = False  # Combat ended, reset the flag
             else:
                 print("You walked to the next room.")
