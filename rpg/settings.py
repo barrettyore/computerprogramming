@@ -61,7 +61,7 @@ class settings():
         "health": 500,
         "type": "hard",
         "damage-low": 10,
-        "damage-low": 50,
+        "damage-high": 50,
     }
 
     asd = {
