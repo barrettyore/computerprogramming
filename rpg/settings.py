@@ -20,6 +20,20 @@ class settings():
         "ammo type": "none",
     }
 
+    plasmathrougher = {
+        "name": "plasma througher",
+        "damage": 147,
+        "type": "hard",
+        "ammo type": "none"
+    }
+
+    gravitydisperser = {
+        "name": "gravity disperser",
+        "damage": 200,
+        "type": "hard",
+        "ammo type": "matter canister"
+    }
+
     smallkit = {
         "name": "small kit",
         "health": 20,
@@ -57,7 +71,7 @@ class settings():
     }
 
     walker = {
-        "name": "WALKER",
+        "name": "WALKER DRONE",
         "health": 500,
         "type": "hard",
         "damage-low": 10,
@@ -65,7 +79,7 @@ class settings():
     }
 
     asd = {
-        "name": "AUTOMATED STEALTH DRONE",
+        "name": "AUTOMATED STEALTH DRONE", #drone has a clocker and half of your attacks miss
         "health": 150,
         "type": "soft",
         "damage-low": 30,
@@ -74,7 +88,7 @@ class settings():
 
     at = {
         "name": "AUTOMATED TURRET",
-        "health": 200,
+        "health": 350,
         "type": "soft",
         "damage-low": 20,
         "damage-high": 40,
